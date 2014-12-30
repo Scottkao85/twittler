@@ -1,27 +1,115 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>~TWITTLER~</title>
+     
+    <link rel="stylesheet" href="dist 2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist 2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="dist 2/js/bootstrap.min.js">
+<!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+-->
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <style type="text/css">
+      #tweets {
+        
+        /*border: 2px solid #003399 ;*/
+        background-color: #5bc0de;
+        
+       
+      }
+
+      #individualTweets {
+        
+        /*border: 2px solid black;*/
+        background-color: #D0D0D0;
+       
+      }
+    </style>
   </head>
-  <body>
+  <body> 
     <script>
-
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        var $tweetContainer = $('#tweets');
+        //$body.html();
+        //var index = streams.home.length - 1;
+          //while(index >= 0){
+          var index = 0;
+          var lastTweetIndex= 0
+          var tweetFunc = function(){
+            for(index = lastTweetIndex; index <= streams.home.length-1; index++){
+              var tweet = streams.home[index];
+              var $tweet = $('<div class="well well-lg"><li><li></div>');
+              var hours = tweet.created_at.getHours();
+              var minutes = tweet.created_at.getMinutes();
+              var seconds = tweet.created_at.getSeconds().toString();
+              var time = hours + ":" + minutes + ":" + seconds;
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+              $tweet.html('@' + '<u>'+'<span>' + tweet.user + '</span>'+ '</u>'+ " ["+  time + "]: " + tweet.message);
+              $tweet.prependTo($tweetContainer);//need to modify this
+            }
+          
+          lastTweetIndex = streams.home.length;
+          }
+          tweetFunc();
+          
 
-      });
+        $(".refresh").on("click", tweetFunc);       
 
+
+        $('#tweets').on("click", 'span',function(){
+          window.domElement = $(this);
+          var thisUser = domElement.text()
+          console.log("THIS user: ", thisUser)
+            $("#individualTweets").empty();
+
+          for(var i = 0; i < streams.users[thisUser].length; i++){
+            var $tweetHist = $('<div class="well well-sm"></div>');
+            var tweetHist = streams.users[thisUser][i]['message'];
+            $tweetHist.text("* " + tweetHist);
+            $tweetHist.appendTo("#individualTweets");
+            
+          }
+
+        });
+      }); // end of document.ready
     </script>
+
+    <div class="container-fluid">
+      <div class="row" style="background-color: #b0c4de;">
+            
+
+        <div class="page-header">
+
+            Welcome to <u><strong>TWITTLER</strong></u> <small> its like Twitter, but shittier </small>
+          </h2> 
+          <button type="button-sm" float ="middle" class="refresh" >check it out</button>
+        </div>
+    
+        <!--<input class="draft" type="text"/>
+        <button class="send" > twittle</button> -->
+        <!--<button type="button" class="refresh">UPDATE</button> -->
+        </br>
+        <div id ="tweets";
+          class="col-xs-8";>
+        </div>
+
+
+        <div id="individualTweets"
+          class="col-xs-4">
+
+        </div>
+
+      </div> <!-- /.row -->
+
+    </div> <!-- /.container-fluid -->
+
   </body>
 </html>
+
+
+
