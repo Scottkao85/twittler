@@ -34,12 +34,13 @@
   <body> 
     <script>
       $(document).ready(function(){
+        //should shows the current message when the browser is opened
         var $tweetContainer = $('#tweets');
-        //$body.html();
-        //var index = streams.home.length - 1;
-          //while(index >= 0){
+          //variable created to avoid repeat msgs
           var index = 0;
           var lastTweetIndex= 0
+          //function that appends the updated msg at the time of execution
+          //by looping thru the array of user tweets and append to container
           var tweetFunc = function(){
             for(index = lastTweetIndex; index <= streams.home.length-1; index++){
               var tweet = streams.home[index];
@@ -57,14 +58,13 @@
           }
           tweetFunc();
           
-
+        //'refresh button' that invokes the previous function once clicked
         $(".refresh").on("click", tweetFunc);       
 
-
+        //set "user name" to span. clicking reveals users past tweet by iterating thru streams.user
         $('#tweets').on("click", 'span',function(){
           window.domElement = $(this);
           var thisUser = domElement.text()
-          console.log("THIS user: ", thisUser)
             $("#individualTweets").empty();
 
           for(var i = 0; i < streams.users[thisUser].length; i++){
@@ -84,12 +84,12 @@
             
 
         <div class="page-header">
-
+            <!--CSS-->
             Welcome to <u><strong>TWITTLER</strong></u> <small> its like Twitter, but shittier </small>
           </h2> 
           <button type="button-sm" float ="middle" class="refresh" >check it out</button>
         </div>
-    
+        <!--want to be able to -->
         <!--<input class="draft" type="text"/>
         <button class="send" > twittle</button> -->
         <!--<button type="button" class="refresh">UPDATE</button> -->
