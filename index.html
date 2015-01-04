@@ -44,6 +44,7 @@
           var tweetFunc = function(){
             for(index = lastTweetIndex; index <= streams.home.length-1; index++){
               var tweet = streams.home[index];
+              var newUser = tweet.user
               var $tweet = $('<div class="well well-lg"><li><li></div>');
               var hours = tweet.created_at.getHours();
               var minutes = tweet.created_at.getMinutes();
@@ -74,8 +75,41 @@
             $tweetHist.appendTo("#individualTweets");
             
           }
-
         });
+        //function to add msg to user.streams
+        /*
+        1. need to create a user name
+        2. add input element into the user tweet array.
+        */
+        var newUser = prompt("whats your name?")
+        streams.users[newUser] = [];
+        var userTweet = streams.users[newUser];
+
+        // typeof streams.users
+        // streams.users.scott
+        //
+
+        var sendTweet = function(someText){
+          userTweet.push(someText);
+        }
+
+        $(".send").on("click", function(){
+          var inputText = {};
+          inputText['created_at']= new Date;
+          inputText['message']= $(".draft").val();
+          inputText['user'] = newUser;
+          sendTweet(inputText); 
+          
+
+          var tweet = inputText['message'];
+          var $tweet = $('<div class="well well-lg"><li><li></div>');
+          $tweet.html('@' + '<u>'+'<span>' + newUser + '</span>'+ '</u>'+ " ["+  inputText['created_at'] + "]: " + inputText['message']);
+          $tweet.prependTo("#tweets");
+          $(".draft").val("")
+        console.log(streams.users)
+        });
+        
+          
       }); // end of document.ready
     </script>
 
@@ -90,8 +124,8 @@
           <button type="button-sm" float ="middle" class="refresh" >check it out</button>
         </div>
         <!--want to be able to -->
-        <!--<input class="draft" type="text"/>
-        <button class="send" > twittle</button> -->
+        <input class="draft" type="text"/>
+        <button class="send" > twittle</button> 
         <!--<button type="button" class="refresh">UPDATE</button> -->
         </br>
         <div id ="tweets";
